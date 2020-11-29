@@ -92,4 +92,8 @@
     <Content Include="bing.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>del *.pdb
+del *.xml</PostBuildEvent>
+  </PropertyGroup>
 </Project>
