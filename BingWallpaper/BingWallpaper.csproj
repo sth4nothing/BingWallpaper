@@ -93,7 +93,15 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>del *.pdb
-del *.xml</PostBuildEvent>
+    <PostBuildEvent>
+del *.pdb
+del *.xml
+del /s $(SolutionName).zip
+rd /s /q $(SolutionName)
+md $(SolutionName)
+copy /y *.* $(SolutionName)
+powershell -command "Compress-Archive -Path $(SolutionName) -DestinationPath $(SolutionName).zip"
+rd /s /q $(SolutionName)
+</PostBuildEvent>
   </PropertyGroup>
 </Project>
