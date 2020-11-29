@@ -45,9 +45,10 @@ namespace BingWallpaper
                 var path = new FileInfo(proc.MainModule.FileName).FullName;
                 using (var key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true))
                 {
-                    if (key.GetValue(nameof(BingWallpaper)) as string != path)
+                    var value = $"\"{path}\"";
+                    if (key.GetValue(nameof(BingWallpaper)) as string != value)
                     {
-                        key.SetValue(nameof(BingWallpaper), $"\"{path}\"");
+                        key.SetValue(nameof(BingWallpaper), value);
                     }
                 }
             }
@@ -147,7 +148,6 @@ namespace BingWallpaper
 
         public static void DownloadWallpaper(Wallpaper wp, Action<int> tick = null)
         {
-
             var remote = new Uri(new Uri(url), wp.Url);
             var localDir = Path.Combine(WallpapersDir, "wallpaper" + DateString);
             if (!Directory.Exists(localDir))
@@ -162,6 +162,17 @@ namespace BingWallpaper
             }
             var webClient = new WebClientEx();
             webClient.DownloadProgressChanged += (o, e) => tick(e.ProgressPercentage);
+            webClient.DownloadFileCompleted += (o, e) =>
+            {
+                if (e.Error != null)
+                {
+                    new Task(() =>
+                    {
+                        if (File.Exists(localFile))
+                            File.Delete(localFile);
+                    }).Start();
+                }
+            };
             webClient.DownloadFileAsync(remote, localFile);
             while (webClient.IsBusy)
             {

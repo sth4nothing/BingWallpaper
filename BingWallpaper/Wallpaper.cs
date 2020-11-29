@@ -12,7 +12,8 @@ namespace BingWallpaper
     class Wallpaper
     {
         public static readonly Rectangle rect = Screen.PrimaryScreen.Bounds;
-        public static readonly string resolution = $"{rect.Width}x{rect.Height}";
+        //public static readonly string resolution = $"{rect.Width}x{rect.Height}";
+        public const string resolution = "1920x1080";
         public string Hash { get; }
         public string Url { get; }
         public Wallpaper(string hash, string url)

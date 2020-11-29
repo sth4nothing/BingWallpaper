@@ -76,7 +76,7 @@ namespace BingWallpaper
                     .EnumerateDirectories("wallpaper*")
                     .ForEach(x =>
                     {
-                        if (x.Name != "wallpaper" + Utils.DateString) x.Delete();
+                        if (x.Name != "wallpaper" + Utils.DateString) x.Delete(true);
                     });
                 foreach (var wp in wallpapers)
                 {
