@@ -46,7 +46,9 @@ namespace BingWallpaper
             }
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("请按回车键退出...");
+#if DEBUG
             Console.ReadLine();
+#endif
         }
 
         private static void DownloadWallpapers(Wallpaper[] wallpapers)
